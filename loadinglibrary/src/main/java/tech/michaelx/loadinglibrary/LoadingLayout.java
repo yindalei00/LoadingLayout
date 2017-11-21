@@ -114,6 +114,14 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
 
         addView(mLoadingBar, params);
 
+        //如果有 mLoadingView ,则不显示 mLoadingBar;
+        if (mLoadingView!=null) {
+
+            if (mLoadingBar!=null) {
+                mLoadingBar.setVisibility(GONE);
+            }
+        }
+
         if (!mAutoLoadingDebug) {
             showLoading();
         }
@@ -219,6 +227,12 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
         addView(mLoadingView, params);
+
+        //如果设置了 mLoadingView,则不显示  mLoadingBar
+        if (mLoadingBar!=null) {
+            mLoadingBar.setVisibility(GONE);
+        }
+
     }
 
     public View getLoadingView() {
@@ -461,6 +475,10 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
         }
     }
 
+    /**
+     * 设置重新加载监听
+     * @param retryLoadListener retryLoadListener
+     */
     public void setOnRetryLoadListener(@NonNull OnRetryLoadListener retryLoadListener) {
         mReLoadListener = retryLoadListener;
     }
