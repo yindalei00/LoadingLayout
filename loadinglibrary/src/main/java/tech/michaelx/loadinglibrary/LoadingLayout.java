@@ -134,10 +134,19 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
         mAutoLoadingDebug = ta.getBoolean(R.styleable.LoadingLayout_showLoadingDebug, false);
 
         try {
-            mLoadingView = LayoutInflater.from(context).inflate(loadingViewLayoutId, null);
-            mEmptyView = LayoutInflater.from(context).inflate(emptyViewLayoutId, null);
-            mErrorView = LayoutInflater.from(context).inflate(errorViewLayoutId, null);
-            mLoadingAnim = AnimatorInflater.loadAnimator(context, loadingAnimId);
+            if (loadingViewLayoutId!=0) {
+                mLoadingView = LayoutInflater.from(context).inflate(loadingViewLayoutId, null);
+            }
+            if (emptyViewLayoutId!=0) {
+                mEmptyView = LayoutInflater.from(context).inflate(emptyViewLayoutId, null);
+            }
+            if (errorViewLayoutId!=0) {
+                mErrorView = LayoutInflater.from(context).inflate(errorViewLayoutId, null);
+            }
+            if (loadingAnimId!=0) {
+                mLoadingAnim = AnimatorInflater.loadAnimator(context, loadingAnimId);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -355,7 +364,15 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
 
         if (mLoadingView != null) {
             mLoadingView.setVisibility(VISIBLE);
+        }else {
+
+            if (mLoadingBar != null) {
+                mLoadingBar.setVisibility(VISIBLE);
+            }
+
         }
+
+
         if (mErrorView != null) {
             mErrorView.setVisibility(GONE);
         }
@@ -364,15 +381,11 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
         }
 
         if (mLoadingView != null && mLoadingAnim != null) {
-            mLoadingBar.setVisibility(GONE);
             mLoadingAnim.setTarget(mLoadingView);
             mLoadingAnim.start();
-            return;
         }
 
-        if (mLoadingBar != null) {
-            mLoadingBar.setVisibility(VISIBLE);
-        }
+
     }
 
     /**
@@ -484,6 +497,9 @@ public class LoadingLayout extends FrameLayout implements View.OnClickListener {
     }
 
     public interface OnRetryLoadListener {
+        /**
+         * 重新加载数据
+         */
         void onReLoad();
     }
 
